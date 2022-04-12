@@ -15,7 +15,7 @@ type Colour = [f32; 4];
 const GREEN: Colour = [0.0, 1.0, 0.0, 1.0];
 const RED: Colour = [1.0, 0.0, 0.0, 1.0];
 const SCREEN_SIZE : [u32; 2] = [640, 480];
-const ACCELERATION_GRAVITY : f64 = 9.81;
+const ACCELERATION_GRAVITY : f64 = 20.0;
 const BOUNCE_EFFICIENCY : f64 = 0.8;
 
 pub struct Ball {
