@@ -16,6 +16,7 @@ const GREEN: Colour = [0.0, 1.0, 0.0, 1.0];
 const RED: Colour = [1.0, 0.0, 0.0, 1.0];
 const SCREEN_SIZE : [u32; 2] = [640, 480];
 const ACCELERATION_GRAVITY : f64 = 9.81;
+const BOUNCE_EFFICIENCY : f64 = 0.8;
 
 pub struct Ball {
     colour: Colour,
@@ -39,18 +40,21 @@ impl Ball {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
+        // update position
         self.x = self.x + self.x_speed * args.dt;
         self.y = self.y + self.y_speed * args.dt;
-        
-        self.y_speed = self.y_speed + ACCELERATION_GRAVITY * args.dt;
 
+        // bounces off walls
         if self.x + self.radius >= SCREEN_SIZE[0] as f64 || self.x <= 0.0 {
-            self.x_speed = -self.x_speed;
+            self.x_speed = -self.x_speed * BOUNCE_EFFICIENCY;
         }
 
         if self.y + self.radius >= SCREEN_SIZE[1] as f64 || self.y <= 0.0 {
-            self.y_speed = -self.y_speed;
+            self.y_speed = -self.y_speed * BOUNCE_EFFICIENCY;
         }
+
+        // acceleration due to gravity
+        self.y_speed = self.y_speed + ACCELERATION_GRAVITY * args.dt;
     }
 
     pub fn render(&mut self, _args: &RenderArgs, gl: &mut GlGraphics, c: Context) {
