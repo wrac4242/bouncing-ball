@@ -10,11 +10,14 @@ use piston::input::{RenderArgs, RenderEvent, UpdateArgs, UpdateEvent};
 use piston::window::WindowSettings;
 use graphics::context::Context;
 
-const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+type Colour = [f32; 4];
+
+const GREEN: Colour = [0.0, 1.0, 0.0, 1.0];
+const RED: Colour = [1.0, 0.0, 0.0, 1.0];
 const SCREEN_SIZE : [u32; 2] = [640, 480];
 
 pub struct Ball {
+    colour: Colour,
     x: f64,
     y: f64,
     radius: f64,
@@ -23,8 +26,9 @@ pub struct Ball {
 }
 
 impl Ball {
-    pub fn new(x: f64, y: f64, radius: f64) -> Ball {
+    pub fn new(x: f64, y: f64, radius: f64, colour: Colour) -> Ball {
         Ball {
+            colour: colour,
             x: x,
             y: y,
             radius: radius,
@@ -50,7 +54,7 @@ impl Ball {
 
         let circle_boarder = graphics::rectangle::square(self.x, self.y, self.radius);
         let transform = c.transform;
-        graphics::ellipse(RED, circle_boarder, transform, gl);
+        graphics::ellipse(self.colour, circle_boarder, transform, gl);
     }
 }
 
@@ -63,7 +67,7 @@ impl App {
     fn new(opengl: OpenGL) -> App {
         App {
             gl: GlGraphics::new(opengl),
-            ball: Ball::new(SCREEN_SIZE[0] as f64 / 2.0, SCREEN_SIZE[1] as f64 / 2.0, 30.0),
+            ball: Ball::new(SCREEN_SIZE[0] as f64 / 2.0, SCREEN_SIZE[1] as f64 / 2.0, 30.0, RED),
         }
     }
 
