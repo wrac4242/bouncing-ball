@@ -15,6 +15,7 @@ type Colour = [f32; 4];
 const GREEN: Colour = [0.0, 1.0, 0.0, 1.0];
 const RED: Colour = [1.0, 0.0, 0.0, 1.0];
 const SCREEN_SIZE : [u32; 2] = [640, 480];
+const ACCELERATION_GRAVITY : f64 = 9.81;
 
 pub struct Ball {
     colour: Colour,
@@ -32,14 +33,16 @@ impl Ball {
             x: x,
             y: y,
             radius: radius,
-            x_speed: 40.0,
-            y_speed: 40.0,
+            x_speed: 0.0,
+            y_speed: 0.0,
         }
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
         self.x = self.x + self.x_speed * args.dt;
         self.y = self.y + self.y_speed * args.dt;
+        
+        self.y_speed = self.y_speed + ACCELERATION_GRAVITY * args.dt;
 
         if self.x + self.radius >= SCREEN_SIZE[0] as f64 || self.x <= 0.0 {
             self.x_speed = -self.x_speed;
